@@ -27,11 +27,24 @@
                 <span class="placeholder">Register</span>
             </label> 
             <input id="create_user" type="checkbox"> 
-            <nav>
-                <ul>
-                    <li>Your Username</li>
-                    <li>Bidding Page</li>
-                </ul>
+            <nav class="register_modal">
+                <div class="register_details">
+                    <svg class="register_exit" xmlns="http://www.w3.org/2000/svg" width="51.414" height="51.414" viewBox="0 0 51.414 51.414">
+                        <path id="ic_close_24px" d="M55,10.036,49.964,5,30,24.964,10.036,5,5,10.036,24.964,30,5,49.964,10.036,55,30,35.036,49.964,55,55,49.964,35.036,30Z" transform="translate(-4.293 -4.293)" fill="#19c2a2" stroke="rgba(0,0,0,0)" stroke-width="1"/>
+                    </svg>
+                    <svg class="register_logo" id="Component_4_17" data-name="Component 4 – 17" xmlns="http://www.w3.org/2000/svg" width="281" height="100" viewBox="0 0 281 100">
+                        <text id="Students_auction" data-name="Students&apos; 
+                            auction" transform="translate(0 42)" fill="#d63031" font-size="40" font-family="MSReferenceSansSerif, MS Reference Sans Serif"><tspan x="0" y="0">Students&apos; </tspan><tspan x="0" y="48">auction</tspan></text>
+                        <path id="ic_home_24px" d="M42,103V67.706H62V103H87V55.941h15L52,3,2,55.941H17V103Z" transform="translate(179 -3)" fill="#d63031"/>
+                    </svg>
+                        <form class="register_signup">
+                            <input type="text" placeholder="Enter Username" required="required" />
+                            <input type="text" placeholder="Enter E-Mail" required="required" />
+                            <input type="password" placeholder="Enter Password" required="required" />
+                            <input type="password" placeholder="Confirm Password" required="required" />
+                            <input type="submit" value="Register" class="registerbutton"/>
+                        </form>
+                </div>
             </nav>
         </div> 
 
@@ -52,8 +65,9 @@
             <input id="dropdown" type="checkbox"> 
             <nav>
                 <ul>
-                    <li>Your Username</li>
+                    <a href="/profile_page.html"><li>Profile Page</li></a>
                     <li>Bidding Page</li>
+                    
                 </ul>
             </nav>
         </div>  
