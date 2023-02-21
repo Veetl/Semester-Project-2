@@ -13,16 +13,13 @@
   },
   "version": "0.0.3",
   "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "eslint --fix",
-      "eslint --cache"
-    ],
+    "*.js": "eslint --cache --fix",
     "*.html": [
       "prettier --write"
     ],
     "*.scss": [
       "prettier --write"
-    ]
+    ],
+    "*.{js,css,md}": "prettier --write"
   }
 }
