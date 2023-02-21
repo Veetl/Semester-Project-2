@@ -11,7 +11,7 @@
     "lint-fix": "eslint src/**/*.js --cache --fix",
     "prepare": "husky install"
   },
-  "version": "0.0.2",
+  "version": "0.0.3",
   "lint-staged": {
     "*.js": [
       "prettier --write",
