@@ -6,6 +6,7 @@
     "prettier": "^2.8.4"
   },
   "scripts": {
+    "test": "node src/js/joker.js",
     "lint": "eslint src/**/*.js",
     "lint-fix": "eslint src/**/*.js --cache --fix",
     "prepare": "husky install"
@@ -23,5 +24,8 @@
     "*.scss": [
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "one-liner-joke": "^1.2.2"
   }
 }
