@@ -11,7 +11,7 @@
     "lint-fix": "eslint src/**/*.js --cache --fix",
     "prepare": "husky install"
   },
-  "version": "0.0.3",
+  "version": "0.0.4",
   "lint-staged": {
     "*.js": "eslint --cache --fix",
     "*.html": [
