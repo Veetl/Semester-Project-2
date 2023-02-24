@@ -134,7 +134,33 @@ export function logoutListener() {
 
 document.querySelector('#logout').addEventListener('click', logoutListener);
 
-var template = document.querySelector('#postHeader').content.cloneNode(true);
-template.querySelector('.mb-0').innerHTML = 'hello world';
-document.querySelector('.logoutpage').innerHTML = '';
-document.querySelector('.logoutpage').append(template);
+export async function getInfo() {
+  const response = await fetch(`${apiPath}/auction/listings`, {
+    method: 'GET',
+    headers: headers('application/json'),
+  });
+
+  if (response.ok) {
+    var data = await response.json();
+
+    for (let i = 0; i < data.length; i++) {
+      if (i === 30) {
+        break;
+      }
+      var template = document
+        .querySelector('#cardAuctionSales')
+        .content.cloneNode(true);
+      template.querySelector('.cardTitle').innerHTML += `${data[i].title}`;
+      template.querySelector(
+        '.cardPicture'
+      ).innerHTML = `<img class="PreviewPicture" src="${data[i].media}"> </img>`;
+      template.querySelector(
+        '.cardDescription'
+      ).innerHTML += `${data[i].description}`;
+      document.querySelector('.Container').innerHTML = '';
+      document.querySelector('.Container').append(template);
+      console.log(template);
+    }
+  }
+}
+await getInfo();
