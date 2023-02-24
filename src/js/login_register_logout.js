@@ -142,24 +142,32 @@ export async function getInfo() {
 
   if (response.ok) {
     var data = await response.json();
+    console.log(data);
 
     for (let i = 0; i < data.length; i++) {
       if (i === 30) {
         break;
       }
+      var title = `${data[i].title}`;
+
+      var endsAt = `${data[i].endsAt}`;
+      var endsAtFirstTen = endsAt.substring(0, 10);
+
       var template = document
         .querySelector('#cardAuctionSales')
         .content.cloneNode(true);
-      template.querySelector('.cardTitle').innerHTML += `${data[i].title}`;
+
+      template.querySelector('.cardTitle').innerHTML += title;
       template.querySelector(
         '.cardPicture'
-      ).innerHTML = `<img class="PreviewPicture" src="${data[i].media}"> </img>`;
+      ).innerHTML = `<img class="PreviewPicture" src="${data[i].media[0]}"> </img>`;
       template.querySelector(
         '.cardDescription'
       ).innerHTML += `${data[i].description}`;
-      document.querySelector('.Container').innerHTML = '';
+      template.querySelector(
+        '.cardDescription'
+      ).innerHTML += `<p class="cardDescription">bidding ends at: ${endsAtFirstTen}</p>`;
       document.querySelector('.Container').append(template);
-      console.log(template);
     }
   }
 }
