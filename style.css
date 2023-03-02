@@ -8,10 +8,8 @@ body {
 }
 header {
   background-color: #2d3436;
-  top: 0;
   height: 70px;
   color: white;
-  margin: auto;
   display: flex;
 }
 header > div {
@@ -19,7 +17,24 @@ header > div {
   width: 1000px;
   margin: auto;
 }
-header > div > div,
+#register {
+  margin: auto;
+}
+.flex_item1 {
+  display: flex;
+  justify-content: flex-start;
+}
+#credits {
+  font-size: 16px;
+  margin: 0px;
+}
+#empty {
+  margin: 0;
+}
+#welcometext {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
 header > div > input,
 header > div > p,
 header > div > form > input {
@@ -39,13 +54,17 @@ header > div > a {
 header > div > a:hover {
   color: #19c2a2;
 }
-header > div > .image > img {
+.image > img {
   border-radius: 50%;
   width: 3rem;
+  border: groove 1px #19c2a2;
+}
+.image {
+  margin-right: 5px;
 }
 .underheader {
   background-color: #dfe6e9;
-  margin: auto;
+  margin-bottom: 15px;
   padding: 10px 0px 10px 0px;
 }
 .underheader > div,
@@ -89,8 +108,10 @@ button > svg {
 label {
   cursor: pointer;
 }
-#container {
+#hamburger {
   margin: auto;
+  justify-content: flex-end;
+  display: flex;
 }
 #dropdown,
 #create_user {
@@ -218,7 +239,7 @@ header > div > a > svg {
 }
 .cardTitle {
   font-size: 15px;
-  color: red;
+  color: #d63031;
   grid-column: 2;
   grid-row: 1;
 }
@@ -232,10 +253,16 @@ header > div > a > svg {
 }
 
 .cardDescription {
-  font-size: 15px;
-  color: red;
+  font-size: 20px;
+  color: black;
   grid-column: 2;
   grid-row: 3;
-
+  max-width: fit-content;
+}
+.cardBids {
+  font-size: 20px;
+  color: black;
+  grid-column: 3;
+  grid-row: 3;
   max-width: fit-content;
 }

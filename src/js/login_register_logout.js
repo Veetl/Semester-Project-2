@@ -14,6 +14,23 @@ export function updateLoginVisibility() {
   document.body.classList[token ? 'add' : 'remove']('logged-in');
 }
 
+var profile = load('profile');
+if (profile != null) {
+  var profileURL = profile.avatar;
+  document.querySelector(
+    '.image'
+  ).innerHTML = `<img class="image" src="${profileURL}"> </img>`;
+  document.querySelector('#welcometext').innerHTML = `Welcome ${profile.name}`;
+  document.querySelector('#credits').innerHTML = `credits: ${profile.credits}`;
+  document.querySelector('#loginForm').innerHTML = '';
+
+  document.querySelector('#register').innerHTML = '';
+} else {
+  document
+    .querySelector('form#registerForm')
+    .addEventListener('submit', registerListener);
+}
+
 export const remove = (key) => localStorage.removeItem(key);
 
 export const save = (key, value) => {
@@ -30,6 +47,7 @@ export async function login(email, password) {
   if (response.ok) {
     const profile = await response.json();
     save('token', profile.accessToken);
+
     delete profile.accessToken;
     save('profile', profile);
     return profile;
@@ -74,7 +92,45 @@ export async function register(name, email, password, avatar) {
 
 export const isLoggedIn = () => Boolean(load('token'));
 
-export const profile = () => load('profile');
+document.getElementById('profile').addEventListener('click', viewProfile);
+
+export function viewProfile() {
+  var profile = load('profile');
+  document.querySelector('.Container').innerHTML = '';
+  var template = document.querySelector('#profilePage').content.cloneNode(true);
+  template.querySelector(
+    '.flex-and-display-column'
+  ).innerHTML = `<img class="image" src="${profile.avatar}"> </img>`;
+
+  template
+    .querySelector('form')
+    .addEventListener('submit', changeAvatarListener);
+
+  document.querySelector('.Container').append(template);
+}
+
+export async function changeAvatarListener(event) {
+  event.preventDefault();
+  const form = event.target;
+  const data = new FormData(form);
+  const avatar = data.get('AvatarURL');
+
+  const response = await fetch(
+    `${apiPath}/auction/profiles/${profile.name}/media`,
+    {
+      method: 'PUT',
+      body: JSON.stringify({ avatar }),
+      headers: headers('application/json'),
+    }
+  );
+
+  if (response.ok) {
+    profile.avatar = avatar;
+    save('profile', profile);
+    location.reload();
+  }
+  throw new Error(response.statusText);
+}
 
 export async function loginListener(event) {
   event.preventDefault();
@@ -92,9 +148,62 @@ export async function loginListener(event) {
     );
   }
 }
+
+document.getElementById('create').addEventListener('click', createListing);
+
+export async function createListing() {
+  document.querySelector('.Container').innerHTML = '';
+
+  var template = document
+    .querySelector('#createListingPage')
+    .content.cloneNode(true);
+
+  template.querySelector('form').addEventListener('submit', createListener);
+  document.querySelector('.Container').append(template);
+}
+
+export async function createListener(event) {
+  event.preventDefault();
+  const form = event.target;
+  const data = new FormData(form);
+  const title = data.get('title');
+  const description = data.get('description');
+  const endsAt = new Date(data.get('endsAt')).toISOString();
+  const tags = data
+    .get('tags')
+    .split(',')
+    .map((x) => x.trim());
+  const media = data
+    .get('media')
+    .split(',')
+    .map((x) => x.trim());
+
+  const response = await fetch(`${apiPath}/auction/listings`, {
+    method: 'POST',
+    body: JSON.stringify({ title, description, endsAt, tags, media }),
+    headers: headers('application/json'),
+  });
+  if (response.ok) {
+    location.reload();
+  }
+  throw new Error(response.statusText);
+}
+
 document
   .querySelector('form#loginForm')
   .addEventListener('submit', loginListener);
+
+export async function seachbarListener(event) {
+  event.preventDefault();
+  const form = event.target;
+  const data = new FormData(form);
+  const keyword = data.get('keywords');
+  getInfo(keyword);
+}
+
+document
+  .querySelector('form#searchbarform')
+  .addEventListener('submit', seachbarListener);
 
 export async function registerListener(event) {
   event.preventDefault();
@@ -118,9 +227,6 @@ export async function registerListener(event) {
     return alert('There was a problem logging into your new account');
   }
 }
-document
-  .querySelector('form#registerForm')
-  .addEventListener('submit', registerListener);
 
 export function logoutListener() {
   try {
@@ -134,41 +240,121 @@ export function logoutListener() {
 
 document.querySelector('#logout').addEventListener('click', logoutListener);
 
-export async function getInfo() {
-  const response = await fetch(`${apiPath}/auction/listings`, {
-    method: 'GET',
+export async function submitBidListener(event) {
+  event.preventDefault();
+  const form = event.target;
+  const data = new FormData(form);
+  const id = data.get('hidden');
+  const amount = Number(data.get('amount'));
+
+  const response = await fetch(`${apiPath}/auction/listings/${id}/bids`, {
+    method: 'POST',
+    body: JSON.stringify({ amount }),
     headers: headers('application/json'),
   });
+  if (response.ok) {
+    location.reload();
+  }
+  throw new Error(response.statusText);
+}
+
+export async function detailsListener(anything) {
+  var itemdata = anything.currentTarget.getAttribute('data-id');
+  const response = await fetch(
+    `${apiPath}/auction/listings/${itemdata}?_seller=true&_bids=true`,
+    {
+      method: 'GET',
+      headers: headers('application/json'),
+    }
+  );
+  if (response.ok) {
+    var data = await response.json();
+    console.log(data);
+    document.querySelector('.Container').innerHTML = '';
+
+    var title = `${data.title}`;
+
+    var template = document
+      .querySelector('#detailsPage')
+      .content.cloneNode(true);
+    template.querySelector('.detailTitle').innerText = title;
+
+    for (let i = 0; i < data.media.length; i++) {
+      if (i === 3) {
+        break;
+      }
+
+      template.querySelector(
+        '#image'
+      ).innerHTML += `<img class="PreviewPicture" src="${data.media[i]}"> </img>`;
+    }
+    template.querySelector('#hidden').value = `${data.id}`;
+
+    template
+      .querySelector('form')
+      .addEventListener('submit', submitBidListener);
+
+    document.querySelector('.Container').append(template);
+  }
+}
+
+export async function getInfo(anything) {
+  const response = await fetch(
+    `${apiPath}/auction/listings?sort=endsAt&sortOrder=desc&_tag=${anything}`,
+    {
+      method: 'GET',
+      headers: headers('application/json'),
+    }
+  );
 
   if (response.ok) {
     var data = await response.json();
     console.log(data);
+    document.querySelector('.Container').innerHTML = '';
 
     for (let i = 0; i < data.length; i++) {
       if (i === 30) {
         break;
       }
       var title = `${data[i].title}`;
-
       var endsAt = `${data[i].endsAt}`;
       var endsAtFirstTen = endsAt.substring(0, 10);
-
       var template = document
         .querySelector('#cardAuctionSales')
         .content.cloneNode(true);
 
-      template.querySelector('.cardTitle').innerHTML += title;
+      template.querySelector('.cardTitle').innerText += title;
       template.querySelector(
         '.cardPicture'
       ).innerHTML = `<img class="PreviewPicture" src="${data[i].media[0]}"> </img>`;
+      template
+        .querySelector('.cardPicture')
+        .querySelector('img')
+        .addEventListener('error', (e) => {
+          e.target.src = 'https://fomantic-ui.com/images/wireframe/image.png';
+        });
+
       template.querySelector(
         '.cardDescription'
       ).innerHTML += `${data[i].description}`;
       template.querySelector(
         '.cardDescription'
       ).innerHTML += `<p class="cardDescription">bidding ends at: ${endsAtFirstTen}</p>`;
+      template.querySelector(
+        '.cardBids'
+      ).innerHTML += `<p class="cardBids">bids: ${data[i]._count.bids}</p>`;
+
+      template
+        .querySelector('.card-header')
+        .setAttribute('data-id', data[i].id);
+      template
+        .querySelector('.card-header')
+        .addEventListener('click', detailsListener);
+
       document.querySelector('.Container').append(template);
     }
   }
 }
-await getInfo();
+await getInfo('');
+
+//temp0[0]._count.bids

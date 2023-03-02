@@ -20,8 +20,15 @@
   </head>
   <header>
     <div>
-      <div class="image"><img src="Images/profile_picture.png" /></div>
-      <p>Welcome Guest!</p>
+      <div class="flex_item1">
+        <div class="image"></div>
+        <div>
+          <p id="empty"></p>
+          <p id="welcometext">Welcome Guest!</p>
+          <p id="credits"></p>
+        </div>
+      </div>
+
       <form id="loginForm">
         <input
           type="text"
@@ -146,7 +153,7 @@
           />
         </svg>
       </a>
-      <div id="container">
+      <div id="hamburger">
         <label for="dropdown" class="dropdown">
           <span class="placeholder"
             ><svg
@@ -175,7 +182,9 @@
               class="registerbutton"
               id="logout"
             />
+            <li id="profile">Profile</li>
             <li>Bidding Page</li>
+            <li id="create">create listing</li>
           </ul>
         </nav>
       </div>
@@ -216,7 +225,12 @@
         </a>
         <div class="searchcontainer">
           <form id="searchbarform">
-            <input type="text" placeholder="Search bar..." class="searchbar" />
+            <input
+              type="text"
+              placeholder="Search bar..."
+              class="searchbar"
+              name="keywords"
+            />
             <button>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -237,12 +251,95 @@
     </div>
 
     <div class="Container"></div>
+
+    <template id="profilePage">
+      <div class="flex-and-display-column">
+        <p>change your avatar</p>
+      </div>
+      <div>
+        <form>
+          <input type="text" required="required" name="AvatarURL" />
+          <input id="hidden" type="hidden" name="hidden" />
+          <input type="submit" />
+        </form>
+      </div>
+    </template>
+
+    <template id="createListingPage">
+      <div class="grid">
+        <p>avatar</p>
+        <form>
+          <input
+            type="text"
+            placeholder="title"
+            required="required"
+            name="title"
+          />
+          <input
+            type="text"
+            placeholder="description"
+            required="required"
+            name="description"
+          />
+          <input
+            type="text"
+            placeholder="example: 2024-12-31"
+            required="required"
+            name="endsAt"
+          />
+          <input
+            type="text"
+            placeholder="tags"
+            required="required"
+            name="tags"
+          />
+          <input
+            type="text"
+            placeholder="picture url link"
+            required="required"
+            name="media"
+          />
+          <input type="submit" />
+        </form>
+      </div>
+    </template>
+
+    <template id="detailsPage">
+      <div class="whole_page">
+        <p class="detailTitle">Overskrift</p>
+        <div class="flex-and-display-row">
+          <div id="image"></div>
+          <div class="flex-and-display-column">
+            informasjon
+            <div>lorum impsum</div>
+            <div>
+              <form>
+                <input
+                  type="number"
+                  placeholder="credits"
+                  required="required"
+                  name="amount"
+                />
+                <input id="hidden" type="hidden" name="hidden" />
+                <input type="submit" />
+              </form>
+            </div>
+          </div>
+        </div>
+        <input id="bidHistory" type="checkbox" />
+        <nav>
+          <ul></ul>
+        </nav>
+      </div>
+    </template>
+
     <template id="cardAuctionSales">
-      <div class="card-header">
+      <button class="card-header">
         <b class="cardTitle"></b>
         <b class="cardPicture"></b>
         <b class="cardDescription"></b>
-      </div>
+        <b class="cardBids"></b>
+      </button>
     </template>
   </body>
 </html>
