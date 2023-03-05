@@ -9,7 +9,6 @@ body {
 header {
   background-color: #2d3436;
   height: 70px;
-  color: white;
   display: flex;
 }
 header > div {
@@ -18,22 +17,32 @@ header > div {
   margin: auto;
 }
 #register {
-  margin: auto;
+  margin-top: auto;
+  margin-right: auto;
+  margin-bottom: auto;
+  display: block;
 }
 .flex_item1 {
   display: flex;
   justify-content: flex-start;
 }
-#credits {
-  font-size: 16px;
-  margin: 0px;
-}
+#credits,
 #empty {
-  margin: 0;
+  font-size: 16px;
+  color: #dfe6e9;
 }
-#welcometext {
-  margin-bottom: 10px;
-  margin-top: 10px;
+.welcomediv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 10px;
+}
+#welcometext,
+.placeholder,
+#profile,
+#create,
+::marker {
+  color: #dfe6e9;
 }
 header > div > input,
 header > div > p,
@@ -49,42 +58,57 @@ header > div > form {
 header > div > a {
   margin: auto;
   text-decoration: none;
-  color: white;
+  color: #fbfaf9;
 }
 header > div > a:hover {
   color: #19c2a2;
 }
-.image > img {
+.image {
   border-radius: 50%;
   width: 3rem;
   border: groove 1px #19c2a2;
-}
-.image {
-  margin-right: 5px;
 }
 .underheader {
   background-color: #dfe6e9;
   margin-bottom: 15px;
   padding: 10px 0px 10px 0px;
 }
-.underheader > div,
+#logout {
+  margin-left: 0;
+  margin-right: 0;
+  width: 80px;
+}
 .logoutpage {
   display: flex;
   width: 1000px;
   margin: auto;
 }
-.searchcontainer {
-  height: 45px;
+.underheader > div {
+  display: flex;
+  width: 800px;
+  margin: auto;
 }
-.underheader > div > a,
-.underheader > div > div,
+.searchcontainer {
+  margin-top: auto;
+  margin-left: auto;
+  margin-bottom: auto;
+  display: flex;
+}
 #searchbarform {
   margin: auto;
   display: flex;
+  border: groove 1px #777777;
+  border-radius: 14px;
+}
+.underheader > div > a {
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  display: flex;
 }
 .searchbar {
-  border-top-left-radius: 14px;
-  border-bottom-left-radius: 14px;
+  border-top-left-radius: 13px;
+  border-bottom-left-radius: 13px;
   border-color: #19c2a2;
   border-style: solid;
   outline: none;
@@ -93,8 +117,8 @@ header > div > a:hover {
 }
 button {
   background-color: #19c2a2;
-  border-top-right-radius: 14px;
-  border-bottom-right-radius: 14px;
+  border-top-right-radius: 13px;
+  border-bottom-right-radius: 13px;
   padding: 0px 25px;
   border: none;
   cursor: pointer;
@@ -109,9 +133,12 @@ label {
   cursor: pointer;
 }
 #hamburger {
-  margin: auto;
+  margin-left: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
   justify-content: flex-end;
   display: flex;
+  display: none;
 }
 #dropdown,
 #create_user {
@@ -188,12 +215,11 @@ header > div > a > svg {
 .headerbutton {
   background: none;
   border: none;
-  color: white;
+  color: #fbfaf9;
   font-size: 20px;
 }
 .registerbutton {
   background-color: #19c2a2;
-  color: white;
   border: none;
   font-size: 20px;
   border-radius: 14px;
@@ -224,12 +250,14 @@ header > div > a > svg {
   row-gap: 50px;
   column-gap: 50px;
   width: 1000px;
-  margin: auto;
   justify-items: center;
   align-items: center;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .card-header {
-  background-color: #19c2a2;
+  background-color: #dfe6e9;
   border-radius: 14px;
   display: grid;
   grid-template-columns: 15% 70% 15%;
@@ -239,17 +267,25 @@ header > div > a > svg {
 }
 .cardTitle {
   font-size: 15px;
-  color: #d63031;
   grid-column: 2;
   grid-row: 1;
+  padding-top: 20px;
+  font-size: large;
 }
 .cardPicture {
   grid-column: 2;
   grid-row: 2;
+  max-width: 200px;
+  max-height: 300px;
+  border-radius: 14px;
+  border: groove 1px #777777;
 }
-.PreviewPicture {
-  max-width: 100%;
-  max-height: 200px;
+.detailsPicture {
+  width: 100%;
+  max-width: 400px;
+  height: 400px;
+  border-radius: 14px;
+  border: groove 1px #777777;
 }
 
 .cardDescription {
@@ -258,11 +294,223 @@ header > div > a > svg {
   grid-column: 2;
   grid-row: 3;
   max-width: fit-content;
+  margin: 0;
+  border: groove 1px #777777;
+  padding: 10px;
+  border-radius: 14px;
+  background-color: #fbfaf9;
 }
+.endsAt-date {
+  font-size: 20px;
+  color: black;
+  grid-column: 2;
+  grid-row: 4;
+  max-width: fit-content;
+  margin: 0;
+  padding-bottom: 20px;
+  font-size: 16px;
+}
+
 .cardBids {
   font-size: 20px;
   color: black;
   grid-column: 3;
-  grid-row: 3;
+  grid-row: 4;
   max-width: fit-content;
+  font-size: 16px;
+}
+.whole_page {
+  max-width: 100%;
+  width: 1000px;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: #dfe6e9;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 14px;
+  border: groove 1px #777777;
+}
+.detailTitle {
+  display: flex;
+  justify-content: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.detailDescription {
+  background-color: #fbfaf9;
+  padding: 10px;
+  border-radius: 14px;
+}
+
+.flex-and-display-row {
+  display: flex;
+  width: 800px;
+  margin: auto;
+}
+#image {
+  margin-top: auto;
+  margin-bottom: auto;
+  max-height: 400px;
+  background-color: black;
+  justify-content: center;
+  display: flex;
+}
+#imagecontainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.bidcontainer {
+  background-color: #fbfaf9;
+  padding: 10px;
+  border-radius: 14px;
+  border: groove 1px #777777;
+  margin-right: 10px;
+  max-height: 500px;
+}
+#imagecontainer > div {
+  display: flex;
+  justify-content: space-around;
+}
+.flex-and-display-column {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+}
+.detailDescription {
+  max-width: 600px;
+  border: groove 1px #777777;
+  height: 100%;
+}
+.space-around {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5px;
+}
+#arrows {
+  width: 100px;
+  border-radius: 14px;
+  height: 30px;
+  border: groove 1px #777777;
+}
+.detailsForm {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+#bidHistory {
+  display: flex;
+  flex-direction: column;
+}
+.bid-results {
+  border: groove 1px #777777;
+}
+#navregister {
+  display: none;
+}
+
+@media screen and (max-width: 1020px) {
+  .Container {
+    grid-template-columns: auto auto;
+    width: 850px;
+  }
+}
+
+@media screen and (max-width: 870px) {
+  header > div,
+  .Container {
+    width: 790px;
+  }
+  .underheader > div {
+    width: 750px;
+  }
+  #navregister {
+    display: block;
+  }
+  #hamburger {
+    display: block;
+  }
+  #register {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 810px) {
+  header > div,
+  .Container {
+    width: 700px;
+  }
+  .underheader > div {
+    width: 660px;
+  }
+  .underheader > div > a {
+    width: 250px;
+  }
+  #searchbarform {
+    width: 350px;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  header > div,
+  .Container {
+    width: 600px;
+  }
+  .underheader > div {
+    width: 560px;
+  }
+  .underheader > div > a {
+    width: 200px;
+  }
+  #searchbarform {
+    width: 300px;
+  }
+  header > div > form {
+    width: 300px;
+  }
+  #loginForm {
+    display: none;
+  }
+  #hamburger {
+    margin-left: auto;
+  }
+  .cardPicture {
+    max-width: 150px;
+    max-height: 250px;
+  }
+  .cardDescription {
+    font-size: 15px;
+  }
+  .cardBids,
+  .endsAt-date,
+  .cardtitle {
+    font-size: 13px;
+  }
+}
+
+@media screen and (max-width: 620px) {
+}
+
+@media screen and (max-width: 520px) {
+}
+
+@media screen and (max-width: 440px) {
+}
+
+@media screen and (max-width: 1020px) {
+  .flex,
+  .carousel {
+    width: 850px;
+  }
+  .post {
+    width: 750px;
+  }
+  .wp-block-image img {
+    max-width: 650px;
+  }
+  #img01 {
+    max-width: 750px;
+  }
 }

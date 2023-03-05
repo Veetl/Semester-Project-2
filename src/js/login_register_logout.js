@@ -17,18 +17,24 @@ export function updateLoginVisibility() {
 var profile = load('profile');
 if (profile != null) {
   var profileURL = profile.avatar;
-  document.querySelector(
-    '.image'
-  ).innerHTML = `<img class="image" src="${profileURL}"> </img>`;
-  document.querySelector('#welcometext').innerHTML = `Welcome ${profile.name}`;
-  document.querySelector('#credits').innerHTML = `credits: ${profile.credits}`;
-  document.querySelector('#loginForm').innerHTML = '';
+  document.querySelector('.image').src = `${profileURL}`;
+  document.querySelector('.image').addEventListener('error', (e) => {
+    e.target.src = 'https://fomantic-ui.com/images/wireframe/image.png';
+  });
 
-  document.querySelector('#register').innerHTML = '';
+  document.querySelector('#welcometext').innerText = `${profile.name}`;
+  document.querySelector('#credits').innerText = `credits: ${profile.credits}`;
+  document.querySelector('#loginForm').innerText = '';
+  document.querySelector('#register').innerText = '';
+  document.querySelector('#hamburger').style.display = 'block';
 } else {
   document
     .querySelector('form#registerForm')
     .addEventListener('submit', registerListener);
+  document.querySelector('.image').hidden = true;
+  document.querySelector('#logout').hidden = true;
+  document.querySelector('#profile').style.display = 'none';
+  document.querySelector('#create').style.display = 'none';
 }
 
 export const remove = (key) => localStorage.removeItem(key);
@@ -96,11 +102,9 @@ document.getElementById('profile').addEventListener('click', viewProfile);
 
 export function viewProfile() {
   var profile = load('profile');
-  document.querySelector('.Container').innerHTML = '';
+  document.querySelector('.Container').innerText = '';
   var template = document.querySelector('#profilePage').content.cloneNode(true);
-  template.querySelector(
-    '.flex-and-display-column'
-  ).innerHTML = `<img class="image" src="${profile.avatar}"> </img>`;
+  template.querySelector('.profileImage').src = `${profile.avatar}`;
 
   template
     .querySelector('form')
@@ -152,7 +156,7 @@ export async function loginListener(event) {
 document.getElementById('create').addEventListener('click', createListing);
 
 export async function createListing() {
-  document.querySelector('.Container').innerHTML = '';
+  document.querySelector('.Container').innerText = '';
 
   var template = document
     .querySelector('#createListingPage')
@@ -255,7 +259,35 @@ export async function submitBidListener(event) {
   if (response.ok) {
     location.reload();
   }
+  var data2 = await response.json();
+  console.log(data2);
+  for (var i = 0; i < data2.errors.length; i++) {
+    alert(data2.errors[i].message);
+  }
   throw new Error(response.statusText);
+}
+var tab = 0;
+function goLeft() {
+  if (tab <= 0) {
+    return;
+  }
+  tab = tab - 1;
+  var pictures = document.querySelectorAll('.detailsPicture');
+  for (var i = 0; i < pictures.length; i++) {
+    pictures[i].hidden = true;
+  }
+  pictures[tab].hidden = false;
+}
+function goRight() {
+  var pictures = document.querySelectorAll('.detailsPicture');
+  if (tab >= pictures.length - 1) {
+    return;
+  }
+  tab = tab + 1;
+  for (var i = 0; i < pictures.length; i++) {
+    pictures[i].hidden = true;
+  }
+  pictures[tab].hidden = false;
 }
 
 export async function detailsListener(anything) {
@@ -270,30 +302,66 @@ export async function detailsListener(anything) {
   if (response.ok) {
     var data = await response.json();
     console.log(data);
-    document.querySelector('.Container').innerHTML = '';
-
-    var title = `${data.title}`;
+    document.querySelector('.Container').innerText = '';
 
     var template = document
       .querySelector('#detailsPage')
       .content.cloneNode(true);
-    template.querySelector('.detailTitle').innerText = title;
-
-    for (let i = 0; i < data.media.length; i++) {
-      if (i === 3) {
-        break;
-      }
-
-      template.querySelector(
-        '#image'
-      ).innerHTML += `<img class="PreviewPicture" src="${data.media[i]}"> </img>`;
+    template.querySelector('.detailTitle').innerText = data.title;
+    if (data.title === '') {
+      template.querySelector('.detailTitle').innerText = 'Missing Title';
     }
-    template.querySelector('#hidden').value = `${data.id}`;
+    template.querySelector('.detailDescription').innerText = data.description;
+    if (data.description === '') {
+      template.querySelector('.detailDescription').innerText =
+        'Missing Description';
+    }
 
+    tab = 0;
+    for (let i = 0; i < data.media.length; i++) {
+      var template1 = document
+        .querySelector('#picturetemplate')
+        .content.cloneNode(true);
+      template1
+        .querySelector('.detailsPicture')
+        .addEventListener('error', (e) => {
+          e.target.src = 'https://fomantic-ui.com/images/wireframe/image.png';
+        });
+      template1.querySelector('.detailsPicture').src = data.media[i];
+      template1.querySelector('.detailsPicture').id = `image${i}`;
+      if (i > 0) template1.querySelector('.detailsPicture').hidden = true;
+      template.querySelector('#imagecontainer').append(template1);
+    }
+
+    if (data.media.length == 0) {
+      var template2 = document
+        .querySelector('#picturetemplate')
+        .content.cloneNode(true);
+      template2.querySelector('.detailsPicture').src =
+        'https://fomantic-ui.com/images/wireframe/image.png';
+      template.querySelector('#imagecontainer').append(template2);
+    }
+
+    data.bids.sort((a, b) => b.amount - a.amount);
+
+    for (let i = 0; i < data.bids.length; i++) {
+      var template3 = document
+        .querySelector('#biddingDetails')
+        .content.cloneNode(true);
+
+      var name_bidder = `${data.bids[i].bidderName}: ${data.bids[i].amount}`;
+
+      template3.querySelector('.bid-results').innerText = name_bidder;
+
+      template.querySelector('#bidHistory').append(template3);
+    }
+
+    template.querySelector('.right').addEventListener('click', goRight);
+    template.querySelector('.left').addEventListener('click', goLeft);
+    template.querySelector('#hidden').value = `${data.id}`;
     template
       .querySelector('form')
       .addEventListener('submit', submitBidListener);
-
     document.querySelector('.Container').append(template);
   }
 }
@@ -310,7 +378,7 @@ export async function getInfo(anything) {
   if (response.ok) {
     var data = await response.json();
     console.log(data);
-    document.querySelector('.Container').innerHTML = '';
+    document.querySelector('.Container').innerText = '';
 
     for (let i = 0; i < data.length; i++) {
       if (i === 30) {
@@ -323,26 +391,26 @@ export async function getInfo(anything) {
         .querySelector('#cardAuctionSales')
         .content.cloneNode(true);
 
-      template.querySelector('.cardTitle').innerText += title;
-      template.querySelector(
-        '.cardPicture'
-      ).innerHTML = `<img class="PreviewPicture" src="${data[i].media[0]}"> </img>`;
-      template
-        .querySelector('.cardPicture')
-        .querySelector('img')
-        .addEventListener('error', (e) => {
-          e.target.src = 'https://fomantic-ui.com/images/wireframe/image.png';
-        });
+      template.querySelector('.cardTitle').innerText = title;
+      if (title === '') {
+        template.querySelector('.cardTitle').innerText = 'Missing Title';
+      }
+
+      template.querySelector('.cardPicture').src = `${data[i].media[0]}`;
+      template.querySelector('.cardPicture').addEventListener('error', (e) => {
+        e.target.src = 'https://fomantic-ui.com/images/wireframe/image.png';
+      });
 
       template.querySelector(
         '.cardDescription'
-      ).innerHTML += `${data[i].description}`;
-      template.querySelector(
-        '.cardDescription'
-      ).innerHTML += `<p class="cardDescription">bidding ends at: ${endsAtFirstTen}</p>`;
-      template.querySelector(
-        '.cardBids'
-      ).innerHTML += `<p class="cardBids">bids: ${data[i]._count.bids}</p>`;
+      ).innerText += `${data[i].description}`;
+      if (`${data[i].description}` === '') {
+        template.querySelector('.cardDescription').innerText =
+          'Missing Description';
+      }
+
+      template.querySelector('.endsAt-date').innerText += `${endsAtFirstTen}`;
+      template.querySelector('.cardBids').innerText += `${data[i]._count.bids}`;
 
       template
         .querySelector('.card-header')
