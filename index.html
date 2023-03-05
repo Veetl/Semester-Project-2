@@ -21,11 +21,12 @@
   <header>
     <div>
       <div class="flex_item1">
-        <div class="image"></div>
-        <div>
-          <p id="empty"></p>
-          <p id="welcometext">Welcome Guest!</p>
-          <p id="credits"></p>
+        <img class="image" />
+
+        <div class="welcomediv">
+          <div id="empty">&nbsp;</div>
+          <div id="welcometext">Welcome Guest!</div>
+          <div id="credits">&nbsp;</div>
         </div>
       </div>
 
@@ -42,7 +43,7 @@
           required="required"
           name="password"
         />
-        <input type="submit" value="login" class="headerbutton" />
+        <input type="submit" value="Login" class="headerbutton" />
       </form>
 
       <div id="register">
@@ -136,23 +137,7 @@
         </nav>
       </div>
 
-      <a href="/cart.html"
-        ><svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="41"
-          height="41"
-          viewBox="0 0 41 41"
-        >
-          <path
-            id="ic_shopping_cart_24px"
-            d="M13,34a4,4,0,1,0,4,4A3.995,3.995,0,0,0,13,34ZM1,2V6H5l7.2,15.18-2.7,4.9A3.867,3.867,0,0,0,9,28a4.012,4.012,0,0,0,4,4H37V28H13.84a.5.5,0,0,1-.5-.5l.06-.24L15.2,24H30.1a3.981,3.981,0,0,0,3.5-2.06L40.76,8.96A1.954,1.954,0,0,0,41,8a2.006,2.006,0,0,0-2-2H9.42L7.54,2H1ZM33,34a4,4,0,1,0,4,4A3.995,3.995,0,0,0,33,34Z"
-            transform="translate(-0.5 -1.5)"
-            fill="#19c2a2"
-            stroke="rgba(0,0,0,0)"
-            stroke-width="1"
-          />
-        </svg>
-      </a>
+      <input type="submit" value="Logout" class="registerbutton" id="logout" />
       <div id="hamburger">
         <label for="dropdown" class="dropdown">
           <span class="placeholder"
@@ -176,15 +161,13 @@
         <input id="dropdown" type="checkbox" />
         <nav>
           <ul>
-            <input
-              type="submit"
-              value="logout"
-              class="registerbutton"
-              id="logout"
-            />
             <li id="profile">Profile</li>
-            <li>Bidding Page</li>
-            <li id="create">create listing</li>
+            <li id="create">Create Listing</li>
+            <li id="navregister">
+              <label for="create_user" class="create_user"
+                ><span class="placeholder">Register</span></label
+              >
+            </li>
           </ul>
         </nav>
       </div>
@@ -252,10 +235,14 @@
 
     <div class="Container"></div>
 
+    <template id="biddingDetails">
+      <div class="bid-results"></div>
+    </template>
+
     <template id="profilePage">
-      <div class="flex-and-display-column">
-        <p>change your avatar</p>
-      </div>
+      <img class="profileImage" />
+      <p>change your avatar</p>
+
       <div>
         <form>
           <input type="text" required="required" name="AvatarURL" />
@@ -304,41 +291,46 @@
       </div>
     </template>
 
+    <template id="picturetemplate">
+      <img id="image1" class="detailsPicture" />
+    </template>
+
     <template id="detailsPage">
       <div class="whole_page">
-        <p class="detailTitle">Overskrift</p>
         <div class="flex-and-display-row">
-          <div id="image"></div>
-          <div class="flex-and-display-column">
-            informasjon
-            <div>lorum impsum</div>
-            <div>
-              <form>
-                <input
-                  type="number"
-                  placeholder="credits"
-                  required="required"
-                  name="amount"
-                />
-                <input id="hidden" type="hidden" name="hidden" />
-                <input type="submit" />
-              </form>
+          <div class="bidcontainer">
+            <div id="imagecontainer"></div>
+            <div class="space-around">
+              <button class="left" id="arrows">Previous</button>
+              <button class="right" id="arrows">Next</button>
             </div>
+            <form class="detailsForm">
+              <input
+                type="number"
+                placeholder="credits"
+                required="required"
+                name="amount"
+              />
+              <input id="hidden" type="hidden" name="hidden" />
+              <input type="submit" placeholder="bid" />
+            </form>
+          </div>
+          <div class="flex-and-display-column">
+            <b class="detailTitle">Overskrift</b>
+            <p class="detailDescription"></p>
+            <div id="bidHistory">Previous Bidders:</div>
           </div>
         </div>
-        <input id="bidHistory" type="checkbox" />
-        <nav>
-          <ul></ul>
-        </nav>
       </div>
     </template>
 
     <template id="cardAuctionSales">
       <button class="card-header">
         <b class="cardTitle"></b>
-        <b class="cardPicture"></b>
-        <b class="cardDescription"></b>
-        <b class="cardBids"></b>
+        <img class="cardPicture" />
+        <p class="cardDescription"></p>
+        <p class="endsAt-date">bidding ends at:</p>
+        <p class="cardBids">bids:</p>
       </button>
     </template>
   </body>
