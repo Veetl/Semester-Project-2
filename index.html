@@ -36,18 +36,20 @@
           placeholder="Enter Username"
           required="required"
           name="email"
+          class="phoneform"
         />
         <input
           type="password"
           placeholder="Enter Password"
           required="required"
           name="password"
+          class="phoneform"
         />
         <input type="submit" value="Login" class="headerbutton" />
       </form>
 
       <div id="register">
-        <label for="create_user" class="create_user">
+        <label for="create_user" class="hide" class="create_user">
           <span class="placeholder">Register</span>
         </label>
         <input id="create_user" type="checkbox" />
@@ -126,12 +128,7 @@
                 required="required"
                 name="avatar"
               />
-              <input
-                type="submit"
-                value="Register"
-                class="registerbutton"
-                onclick="console.log('hello world')"
-              />
+              <input type="submit" value="Register" class="registerbutton" />
             </form>
           </div>
         </nav>
@@ -177,7 +174,7 @@
   <body>
     <div class="underheader">
       <div>
-        <a href="/index.html">
+        <a href="index.html">
           <svg
             id="Component_4_17"
             data-name="Component 4 – 17"
@@ -240,22 +237,30 @@
     </template>
 
     <template id="profilePage">
-      <img class="profileImage" />
-      <p>change your avatar</p>
-
-      <div>
-        <form>
-          <input type="text" required="required" name="AvatarURL" />
-          <input id="hidden" type="hidden" name="hidden" />
-          <input type="submit" />
-        </form>
+      <div class="profileWholepage">
+        <div class="avatarform">
+          <img class="profileImage" />
+          <p class="imagechangetext">change your avatar</p>
+          <div>
+            <form class="avatarURLchange">
+              <input
+                id="URLinput"
+                type="text"
+                required="required"
+                name="AvatarURL"
+              />
+              <input id="hidden" type="hidden" name="hidden" />
+              <input type="submit" />
+            </form>
+          </div>
+        </div>
       </div>
     </template>
 
     <template id="createListingPage">
-      <div class="grid">
-        <p>avatar</p>
-        <form>
+      <div class="listingWholepage">
+        <p class="listingtitle">Create a listing</p>
+        <form class="formcolumn">
           <input
             type="text"
             placeholder="title"

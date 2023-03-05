@@ -27,6 +27,9 @@ if (profile != null) {
   document.querySelector('#loginForm').innerText = '';
   document.querySelector('#register').innerText = '';
   document.querySelector('#hamburger').style.display = 'block';
+  document.querySelector('#register').style.margin = '0';
+  document.querySelector('#loginForm').style.margin = '0';
+  document.querySelector('#navregister').hidden = true;
 } else {
   document
     .querySelector('form#registerForm')
@@ -266,6 +269,7 @@ export async function submitBidListener(event) {
   }
   throw new Error(response.statusText);
 }
+
 var tab = 0;
 function goLeft() {
   if (tab <= 0) {
@@ -363,6 +367,13 @@ export async function detailsListener(anything) {
       .querySelector('form')
       .addEventListener('submit', submitBidListener);
     document.querySelector('.Container').append(template);
+
+    var profile = load('profile');
+    if (profile != null) {
+      document.querySelector('.detailsForm').style.display = 'flex';
+    } else {
+      document.querySelector('.detailsForm').style.display = 'none';
+    }
   }
 }
 
